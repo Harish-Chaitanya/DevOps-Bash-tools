@@ -25,7 +25,7 @@ bash_tools="${bash_tools:-$(dirname "${BASH_SOURCE[0]}")/..}"
 # shellcheck disable=SC1090
 [ -f ~/.docker_vars ] && . ~/.docker_vars
 
-#if isLinux && type podman &>/dev/null; then
+#if is_linux && type -P podman &>/dev/null; then
 #    alias docker="podman"
 #fi
 
@@ -41,7 +41,7 @@ alias dl='docker ps -lq'
 alias dockerimg='$EDITOR "$bash_tools/setup/docker-images.txt"'
 
 # wipe out exited containers
-alias dockerrm='docker rm $(docker ps -qf status=exited)'
+alias dockerrm='docker rm -- $(docker ps -qf status=exited)'
 
 alias dockerr=dockerrunrm
 alias dock=dockerr
@@ -158,7 +158,7 @@ dockerrmall(){
     local ids=()
     read -r -a ids <<< "$(docker_get_container_ids)"
     if [ ${#ids} -gt 0 ]; then
-        docker rm -f "${ids[@]}"
+        docker rm -f -- "${ids[@]}"
     fi
 }
 
@@ -168,7 +168,7 @@ dockerrmigrep(){
         grep "$x" |
         grep -v "<none>" |
         awk '{print $1":"$2}' |
-        xargs -r docker rmi
+        xargs -r docker rmi --
     done
 }
 
@@ -177,7 +177,7 @@ dockerrmgrep(){
         docker ps -a |
         grep "$x" |
         awk '{print $NF}' |
-        xargs -r docker rm -f
+        xargs -r docker rm -f --
     done
 }
 

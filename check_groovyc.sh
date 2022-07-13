@@ -30,11 +30,8 @@ Useful for doing basic linting on simple self-contained Groovy scripts such as J
 
 help_usage "$@"
 
-directory="${1:-.}"
-shift ||:
-
 echo "Checking for Groovy files"
-filelist="$(find "$directory" -type f -iname '*.groovy' | sort)"
+filelist="$(for directory in "${@:-.}"; do find "$directory" -type f -iname '*.groovy'; done | sort -u)"
 if [ -z "$filelist" ]; then
     return 0 &>/dev/null || :
     exit 0
@@ -64,11 +61,11 @@ check_groovyc(){
     # doens't stop class files being left behind in script $PWD, not directory containing "$filename"
     #if ! groovyc --temp /tmp "$filename" "$@" >&2; then
     if ! groovyc "$filename" "$@" >&2; then
-        rm -f "$classfile_base"*.class
+        rm -f -- "$classfile_base"*.class
         echo 1
         exit 1
     fi
-    rm -f "$classfile_base"*.class
+    rm -f -- "$classfile_base"*.class
 }
 
 echo "building file list" >&2

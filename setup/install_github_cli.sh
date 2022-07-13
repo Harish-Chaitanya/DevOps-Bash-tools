@@ -33,28 +33,14 @@ export PATH="$PATH:$HOME/bin"
 
 help_usage "$@"
 
-#min_args 1 "$@"
-
 #version="${1:-2.4.0}"
 version="${1:-latest}"
-
-owner_repo="cli/cli"
-
-if [ "$version" = latest ]; then
-    timestamp "determining latest version of '$owner_repo' via GitHub API"
-    version="$("$srcdir/../github_repo_latest_release.sh" "$owner_repo")"
-    version="${version#v}"
-    timestamp "latest version is '$version'"
-else
-    is_semver "$version" || die "non-semver version argument given: '$version' - should be in format: N.N.N"
-fi
 
 os="$(get_os)"
 if [ "$os" = darwin ]; then
     os=macOS
 fi
 
-"$srcdir/../install_binary.sh" "https://github.com/cli/cli/releases/download/v$version/gh_${version}_${os}_{arch}.tar.gz" "gh_${version}_${os}_{arch}/bin/gh"
+export RUN_VERSION_ARG=1
 
-echo
-gh version
+"$srcdir/../github_install_binary.sh" cli/cli "gh_{version}_${os}_{arch}.tar.gz" "$version" "gh_{version}_${os}_{arch}/bin/gh"

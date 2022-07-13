@@ -13,48 +13,35 @@
 #  https://www.linkedin.com/in/HariSekhon
 #
 
-# Installs AWS eksctl from WeaveWorks
+#"$srcdir/install_homebrew.sh"
+#brew tap weaveworks/tap
+#brew install weaveworks/tap/eksctl
+#brew upgrade eksctl
+#brew link --overwrite eksctl
 
 set -euo pipefail
 [ -n "${DEBUG:-}" ] && set -x
 srcdir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# unreliable that HOME is set, ensure shell evaluates to the right thing before we use it
-[ -n "${HOME:-}" ] || HOME=~
+# shellcheck disable=SC1090
+. "$srcdir/../lib/utils.sh"
 
-export PATH="$PATH:/usr/local/bin"
+# shellcheck disable=SC2034,SC2154
+usage_description="
+Installs AWS eksctl CLI from WeaveWorks
+"
+
+# used by usage() in lib/utils.sh
+# shellcheck disable=SC2034
+usage_args="[<version>]"
+
 export PATH="$PATH:$HOME/bin"
 
-if type -P eksctl &>/dev/null; then
-    echo "AWS eksctl already installed"
-    exit 0
-fi
+help_usage "$@"
 
-echo "Installing AWS eksctl tool"
-echo
+#version="${1:-2.4.0}"
+version="${1:-latest}"
 
-uname_s="$(uname -s)"
+export RUN_VERSION_ARG=1
 
-mkdir -p ~/bin
-
-if [ "$uname_s" = Darwin ]; then
-    "$srcdir/install_homebrew.sh"
-    brew tap weaveworks/tap
-    brew install weaveworks/tap/eksctl
-    brew upgrade eksctl
-    brew link --overwrite eksctl
-else
-    echo "downloading eksctl binary"
-    curl -sSL --fail "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
-    echo "moving eksctl to $HOME/bin"
-    mv /tmp/eksctl ~/bin
-fi
-
-echo "Installed"
-echo
-echo -n "eksctl version:  "
-eksctl version
-
-echo
-echo
-"$srcdir/install_kubectl.sh"
+"$srcdir/../github_install_binary.sh" weaveworks/eksctl 'eksctl_{os}_{arch}.tar.gz' "$version" eksctl

@@ -24,6 +24,8 @@ srcdir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 usage_description="
 Queries the Jenkins Rest API
 
+Handles obtaining the CRSF protection token Jenkins-Crumb for you
+
 Can specify \$CURL_OPTS for options to pass to curl, or pass them as arguments to the script
 
 Requires either \$JENKINS_URL or \$JENKINS_HOST + \$JENKINS_PORT which defaults to localhost and port 8080
@@ -40,6 +42,22 @@ If using JENKINS_PASSWORD, obtains the Jenkins-Crumb cookie from a pre-request
 On Jenkins 2.176.2 onwards, you must set JENKINS_TOKEN instead of using a password, see
 
     https://www.jenkins.io/doc/upgrade-guide/2.176/#SECURITY-626
+
+Example:
+
+    # List Credentials in the Global System Provider Store:
+
+        ${0##*/} '/credentials/store/system/domain/_/api/json?tree=credentials\\[id\\]' | jq .
+
+    # Retrieve the config of a given credential by its ID, in this case 'haritest':
+
+        ${0##*/} '/credentials/store/system/domain/_/credential/haritest/config.xml'
+
+    # Delete a Jenkins job/pipeline called 'test':
+
+        ${0##*/} /job/test/ -X DELETE -i
+
+    # See many adjacent jenkins_*.sh scripts that use this script to make many common actions easier
 "
 
 # used by usage() in lib/utils.sh
@@ -65,7 +83,7 @@ fi
 shopt -u nocasematch
 JENKINS_URL="${JENKINS_URL%%/}"
 
-export USERNAME="${JENKINS_USER_ID:${JENKINS_USERNAME:-${JENKINS_USER:-}}}"
+export USERNAME="${JENKINS_USER_ID:-${JENKINS_USERNAME:-${JENKINS_USER:-}}}"
 JENKINS_TOKEN="${JENKINS_API_TOKEN:-${JENKINS_TOKEN:-}}"
 if [ -n "${JENKINS_TOKEN:-}" ]; then
     export PASSWORD="$JENKINS_TOKEN"
@@ -75,4 +93,4 @@ else
     CURL_OPTS+=(-H "Jenkins-Crumb: $crumb")
 fi
 
-"$srcdir/curl_auth.sh" "$JENKINS_URL/$url_path" "${CURL_OPTS[@]}" "$@"
+"$srcdir/curl_auth.sh" "$JENKINS_URL/$url_path" ${CURL_OPTS:+"${CURL_OPTS[@]}"} "$@"

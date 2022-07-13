@@ -29,13 +29,14 @@ BRANCHES_TO_PR_DEFAULT="
     production
 "
 
-BRANCHES_TO_AUTOMERGE_DEFAULT="
-    master
-    main
-    develop
-    dev
-    staging
-"
+# make this more explicit for user
+BRANCHES_TO_AUTOMERGE_DEFAULT=""
+#    master
+#    main
+#    develop
+#    dev
+#    staging
+#"
 
 # shellcheck disable=SC2034,SC2154
 usage_description="
@@ -45,7 +46,8 @@ Creates Pull Requests for branches given as arguments or set in \$BRANCHES_TO_PR
 $BRANCHES_TO_PR_DEFAULT
 
 Auto-merges the PRs for branches set in \$BRANCHES_TO_AUTOMERGE or the following default branches:
-$BRANCHES_TO_AUTOMERGE_DEFAULT
+
+${BRANCHES_TO_AUTOMERGE_DEFAULT:-<none>}
 
 Requires GitHub CLI to be installed and configured
 

@@ -23,6 +23,8 @@ if [ "${bash_tools_utils_imported:-0}" = 1 ]; then
 fi
 bash_tools_utils_imported=1
 
+. "$srcdir_bash_tools_utils/utils-bourne.sh"
+
 export PATH="$PATH:/usr/local/bin"
 
 . "$srcdir_bash_tools_utils/ci.sh"
@@ -221,13 +223,6 @@ is_interactive(){
     return 1
 }
 
-if [ $EUID -eq 0 ]; then
-    sudo=""
-else
-    sudo=sudo
-fi
-export sudo
-
 # XXX: there are other tarball extensions for other compression algorithms but these are the 2 very standard ones we always use: gzip or bz2
 has_tarball_extension(){
     local filename="$1"
@@ -271,7 +266,7 @@ get_arch(){
 curl(){
     local opts=()
     if is_piped || is_CI; then
-        opts+=(-sS)
+        opts+=(-sSf)
     fi
     command curl ${opts:+"${opts[@]}"} "$@"
 }
@@ -290,7 +285,7 @@ download(){
     if type -P wget &>/dev/null; then
         wget -O "$download_file" "$url"
     elif type -P curl &>/dev/null; then
-        curl -L -o "$download_file" "$url"
+        curl -sSLf -o "$download_file" "$url"
     else
         die "wget / curl not installed - cannot download"
     fi
@@ -693,6 +688,11 @@ timestamp(){
     fi
 }
 tstamp(){ timestamp "$@"; }
+
+seconds_to_hours(){
+    local secs="$1"
+    printf '%d:%02d:%02d\n' $((secs/3600)) $((secs%3600/60)) $((secs%60))
+}
 
 warn(){
     timestamp "WARNING: $*"

@@ -15,21 +15,30 @@
 
 set -euo pipefail
 [ -n "${DEBUG:-}" ] && set -x
+srcdir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-version="latest"
+# shellcheck disable=SC1090
+. "$srcdir/../lib/utils.sh"
 
-platform="$(uname -s | tr '[:upper:]' '[:lower:]')"
+# shellcheck disable=SC2034,SC2154
+usage_description="
+Installs ArgoCD CLI
+"
 
-cd /tmp
+# used by usage() in lib/utils.sh
+# shellcheck disable=SC2034
+usage_args="[<version>]"
 
-date "+%F %T  downloading argocd"
-wget -O argocd.$$ "https://github.com/argoproj/argo-cd/releases/$version/download/argocd-$platform-amd64"
+export PATH="$PATH:$HOME/bin"
 
-date "+%F %T  downloaded argocd"
-date "+%F %T  chmod'ing and moving to ~/bin"
-chmod +x argocd.$$
-mkdir -pv ~/bin
-unalias mv &>/dev/null || :
-mv -vf argocd.$$ ~/bin/argocd
+help_usage "$@"
+
+#version="${1:-2.4.0}"
+version="${1:-latest}"
+
+#export RUN_VERSION_ARG=1
+
+"$srcdir/../github_install_binary.sh" argoproj/argo-cd "argocd-{os}-{arch}" "$version"
+
 echo
-~/bin/argocd version
+argocd version --client

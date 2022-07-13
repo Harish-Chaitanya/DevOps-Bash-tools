@@ -32,6 +32,7 @@ Supports new user and new access key csv file formats eg. 'Download .csv file' w
 Useful to quickly switch your shell to some exported credentials from a service account for testing permissions
 or pipe to upload to a CI/CD system via an API, eg. the adjacent scripts:
 
+    jenkins_cred_add*.sh
     github_actions_repo*_set_secret.sh
     gitlab_*_set_env_vars.sh
     circleci_*_set_env_vars.sh
@@ -65,18 +66,18 @@ if ! grep -Fq 'AKIA' "$csv"; then
 fi
 
 # for CSV created at access key creation time
-if grep -Fxq 'Access key ID,Secret access key' "$csv"; then
+if tr -d '\r' < "$csv" | grep -Fxq 'Access key ID,Secret access key'; then
     # access keys are prefixed with AKIA, skips header row by selecting the row with the AKIA key
     awk -F, '/AKIA/{
         print "export AWS_ACCESS_KEY_ID="$1
         print "export AWS_SECRET_ACCESS_KEY="$2
-    }' "$csv"
+    }' "$csv" | tr -d '\r'
 # for CSV created at user creation time
 elif tr -d '\r' < "$csv" | grep -Fxq 'User name,Password,Access key ID,Secret access key,Console login link'; then
     awk -F, '/AKIA/{
         print "export AWS_ACCESS_KEY_ID="$3
         print "export AWS_SECRET_ACCESS_KEY="$4
-    }' "$csv"
+    }' "$csv" | tr -d '\r'
 else
     die "ERROR: unrecognized CSV header line, may have changed so code may need an update"
 fi

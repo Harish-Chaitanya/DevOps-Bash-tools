@@ -232,6 +232,13 @@ github-cli: ~/bin/gh
 ~/bin/gh:
 	setup/install_github_cli.sh
 
+.PHONY:
+digital-ocean: ~/bin/doctl
+	@:
+
+~/bin/doctl:
+	setup/install_doctl.sh
+
 .PHONY: kubernetes
 kubernetes: kubectl kustomize
 	@:
@@ -277,7 +284,7 @@ test:
 
 .PHONY: clean
 clean:
-	@rm -fv setup/terraform.zip
+	@rm -fv -- setup/terraform.zip
 
 .PHONY: ls-scripts
 ls-scripts:

@@ -24,3 +24,7 @@ if [ -n "${DATREE_TOKEN:-}" ]; then
     echo "\$DATATREE_TOKEN found, configuring..."
     datree config set token "$DATREE_TOKEN"
 fi
+
+echo
+echo -n "Datree version: "
+datree version

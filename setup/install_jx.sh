@@ -17,29 +17,30 @@
 
 set -euo pipefail
 [ -n "${DEBUG:-}" ] && set -x
+srcdir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-if [ -z "${FORCE:-}" ] && type -P jx &>/dev/null; then
-    echo "jx is already available in \$PATH, skipping"
-    exit 0
-fi
+# shellcheck disable=SC1090
+. "$srcdir/../lib/utils.sh"
 
-cd /tmp
+# shellcheck disable=SC2034,SC2154
+usage_description="
+Installs JenkinsX CLI
+"
 
-latest_version="$(curl -sS "https://github.com/jenkins-x/jx/releases/latest" | sed 's#.*tag/\(.*\)\".*#\1#')"
-platform="$(uname -s)"
+# used by usage() in lib/utils.sh
+# shellcheck disable=SC2034
+usage_args="[<version>]"
 
-date "+%F %T  downloading jx"
-wget -qcO jx.tgz "https://github.com/jenkins-x/jx/releases/download/$latest_version/jx-$platform-amd64.tar.gz"
-date "+%F %T  downloaded jx"
+export PATH="$PATH:$HOME/bin"
 
-date "+%F %T  unpacking jx"
-tar xzvf jx.tgz jx
+help_usage "$@"
 
-date "+%F %T  chmod'ing and moving to ~/bin"
-chmod +x jx
+#version="${1:-2.4.0}"
+version="${1:-latest}"
 
-mkdir -pv ~/bin
-unalias mv &>/dev/null || :
-mv -vf jx ~/bin/
+export RUN_VERSION_ARG=1
 
-~/bin/jx version --short
+"$srcdir/../github_install_binary.sh" jenkins-x/jx 'jx-{os}-{arch}.tar.gz' "$version" jx
+
+echo >&2
+jx version --short

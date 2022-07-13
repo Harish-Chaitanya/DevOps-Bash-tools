@@ -34,14 +34,13 @@ An optional binary destination can be given to name the file - if the file name 
 
 # used by usage() in lib/utils.sh
 # shellcheck disable=SC2034
-usage_args="<url> [<binary_path_in_zip_or_tarball>] [<binary_destination_name>]"
+usage_args="<url> [<binary_path_in_zip_or_tarball> <install_path>]"
 
 help_usage "$@"
 
 min_args 1 "$@"
 
 url="$1"
-shift || :
 
 os="$(get_os)"
 arch="$(get_arch)"
@@ -50,39 +49,51 @@ url="${url//\{os\}/$os}"
 url="${url//\{arch\}/$arch}"
 
 package="${url##*/}"
-tmp="/tmp"
-download_file="$tmp/$package.$$"
-
-trap_cmd "rm -f '$download_file'"
+tmp="/tmp/install_binary.$$"
+download_file="$tmp/$package"
 
 if [[ "$package" =~ \.zip$ ]] || has_tarball_extension "$package"; then
-    if [ $# -lt 1 ]; then
+    if [ $# -lt 2 ]; then
         usage "binary file path must be specified if downloading a tarball or zip file ('$package')"
     fi
-    binary="$1"
-    shift || :
+    binary="$2"
     binary="${binary//\{os\}/$os}"
     binary="${binary//\{arch\}/$arch}"
 fi
+
+mkdir -p -v "$tmp"
+
+trap_cmd "rm -f -- '$download_file'"
+
+cd "$tmp"
 
 timestamp "Downloading: $url"
 download "$url" "$download_file"
 
 if has_tarball_extension "$package"; then
-    timestamp "Extracting package"
-    cd "$tmp"
+    timestamp "Extracting tarball package"
+    if ! type -P tar &>/dev/null; then
+        "$srcdir/install_packages.sh" tar
+    fi
     if has_tarball_gzip_extension "$package"; then
         tar xvzf "$download_file"
     elif has_tarball_bzip2_extension "$package"; then
         tar xvjf "$download_file"
     fi
     if ! [ -f "$binary" ]; then
-        die "Failed to extract binary '$binary' from '$download_file'"
+        die "Failed to find binary '$binary' in unpacked tarball '$download_file' - is the given binary filename / path correct?"
     fi
     download_file="$binary"
     echo
 elif [[ "$package" =~ \.zip$ ]]; then
-    unzip "$download_file"
+    timestamp "Extracting zip package"
+    if ! type -P unzip &>/dev/null; then
+        "$srcdir/install_packages.sh" unzip
+    fi
+    unzip -o "$download_file"
+    if ! [ -f "$binary" ]; then
+        die "Failed to find binary '$binary' in unpacked zip '$download_file' - is the given binary filename / path correct?"
+    fi
     download_file="$binary"
 fi
 
@@ -90,21 +101,24 @@ timestamp "Setting executable: $download_file"
 chmod +x "$download_file"
 echo
 
-destination="${1:-}"
+destination="${3:-${2:+${2##*/}}}"
 if [ -z "$destination" ]; then
     destination="${download_file##*/}"
-    destination="${destination%%.$$}"
+    # no longer suffixing with $$, used in $tmp instead
+    #destination="${destination%%.$$}"
     # if there are any -darwin-amd64 or -amd64-darwin suffixes remove them either way around (this is why $os is stripped before and after)
     destination="${destination%%-$os}"
     destination="${destination%%_$os}"
     destination="${destination%%-$arch}"
     destination="${destination%%_$arch}"
+    destination="${destination%%-x86_64}"  # $arch is amd64, we must check to strip this explicitly extra
+    destination="${destination%%_x86_64}"
     destination="${destination%%-$os}"
     destination="${destination%%_$os}"
 fi
 
 if ! [[ "$destination" =~ ^/ ]]; then
-    if [ $EUID = 0 ]; then
+    if am_root; then
         destination="/usr/local/bin/$destination"
     else
         destination=~/bin/"$destination"
@@ -115,12 +129,20 @@ if [ -e "$install_path" ] && ! [ -d "$install_path" ]; then
     die "ERROR: install path $install_path is not a directory, aborting!"
 fi
 mkdir -p -v "$install_path"
-echo
+#echo
 
 timestamp "Moving to install dir:"
 # common alias mv='mv -i' would force a prompt we don't want, even with -f
 unalias mv &>/dev/null || :
-mv -fv "$download_file" "$destination"
+mv -fv -- "$download_file" "$destination"
 echo
 
 timestamp "Installation complete"
+
+if [ -n "${RUN_VERSION_ARG:-}" ]; then
+    echo
+    "$destination" version
+elif [ -n "${RUN_VERSION_OPT:-}" ]; then
+    echo
+    "$destination" --version
+fi

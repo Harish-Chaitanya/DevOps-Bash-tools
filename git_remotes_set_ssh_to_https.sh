@@ -36,7 +36,7 @@ topdir="$(git_root)"
 
 cd "$topdir"
 
-cp -iv .git/config ".git/config.$(date +%F_%H%M%S).bak"
+cp -iv -- .git/config ".git/config.$(date +%F_%H%M%S).bak"
 
 # XXX: only replace first / with : if git@, if ssh://git@ then it uses slashes throughout
 perl -pi -e 's/(\bgit@[^:]+):/\1\//;
@@ -44,7 +44,8 @@ perl -pi -e 's/(\bgit@[^:]+):/\1\//;
              s/\bgit@/https:\/\//;
              ' .git/config
 
-azure_devops_url="$(grep '^[[:space:]]*url[[:space:]]*=[[:space:]]*.*dev.azure.com' .git/config | sed 's/.*url[[:space:]]*=[[:space:]]*//; s/[[:space:]]*$//' || :)"
+azure_devops_url="$(grep '^[[:space:]]*url[[:space:]]*=[[:space:]]*.*dev.azure.com' .git/config |
+                    sed 's/.*url[[:space:]]*=[[:space:]]*//; s/[[:space:]]*$//' || :)"
 
 if [ -n "$azure_devops_url" ]; then
     azure_devops_url2="$(git_to_azure_url "$azure_devops_url")"

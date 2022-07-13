@@ -41,6 +41,8 @@ help_usage "$@"
 
 version="${1:-v3-stable}"
 
+export RUN_VERSION_ARG=1
+
 # XXX: passing 'v2-stable' as version the URL gets updated but it still downloads v3, not sure how to predict this :-/
 "$srcdir/../install_binary.sh" "https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-$version-{os}-{arch}.zip" "ngrok"
 
@@ -52,6 +54,3 @@ if [ -n "${TOKEN:-}" ]; then
     ngrok config add-authtoken "$TOKEN"
     timestamp "authentication configured"
 fi
-
-echo
-ngrok version

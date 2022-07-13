@@ -13,50 +13,50 @@
 #  https://www.linkedin.com/in/HariSekhon
 #
 
-set -euo pipefail
-[ -n "${DEBUG:-}" ] && set -x
-
-cert_manager_version="1.1.0"
-
-platform="$(uname -s | tr '[:upper:]' '[:lower:]')"
-
-cd /tmp
-
-# =======================================================
 # https://kubernetes.io/docs/tasks/tools/install-kubectl/
 
-#if [ "$(uname -s)" = Darwin ]; then
-#    curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/darwin/amd64/kubectl"
-#else
-#    curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
-#fi
+set -euo pipefail
+[ -n "${DEBUG:-}" ] && set -x
+srcdir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-date "+%F %T  downloading kubectl"
-wget -O kubectl.$$ "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/$platform/amd64/kubectl"
+# shellcheck disable=SC1090
+. "$srcdir/../lib/utils.sh"
 
-date "+%F %T  downloaded kubectl"
-date "+%F %T  chmod'ing and moving to ~/bin"
-chmod +x kubectl.$$
-mkdir -pv ~/bin
-unalias mv &>/dev/null || :
-mv -vf kubectl.$$ ~/bin/kubectl
+# shellcheck disable=SC2034,SC2154
+usage_description="
+Installs Kubernetes 'kubectl' CLI
+"
+
+# used by usage() in lib/utils.sh
+# shellcheck disable=SC2034
+usage_args="[<version>]"
+
+export PATH="$PATH:$HOME/bin"
+
+help_usage "$@"
+
+#min_args 1 "$@"
+
+version="${1:-latest}"
+
+if [ "$version" = latest ]; then
+    version="$(curl -sSL https://dl.k8s.io/release/stable.txt)"
+    version="${version#v}"
+    timestamp "latest version is '$version'"
+else
+    is_semver "$version" || die "non-semver version argument given: '$version' - should be in format: N.N.N"
+fi
+
+# gives this error:
+# WARNING: This version information is deprecated and will be replaced with the output from kubectl version --short.  Use --output=yaml|json to get the full version.
+# The connection to the server localhost:8080 was refused - did you specify the right host or port?
+#export RUN_VERSION_ARG=1
+
+"$srcdir/../install_binary.sh" "https://dl.k8s.io/release/v$version/bin/{os}/{arch}/kubectl"
+
 echo
-~/bin/kubectl version --client
-
-
-# =======================================================
-# https://cert-manager.io/docs/usage/kubectl-plugin/
-
-echo
-echo
-kubectl_cert_manager="kubectl-cert_manager"
-date "+%F %T  downloading kubectl cert-manager plugin"
-curl -sSLo kubectl-cert-manager.$$.tar.gz "https://github.com/jetstack/cert-manager/releases/download/v$cert_manager_version/kubectl-cert_manager-$platform-amd64.tar.gz"
-date "+%F %T  downloaded kubectl cert-manager plugin"
-tar xzf kubectl-cert-manager.$$.tar.gz
-date "+%F %T  chmod'ing and moving to ~/bin"
-chmod +x "$kubectl_cert_manager"
-mv -vf "$kubectl_cert_manager" ~/bin/
-
-echo
-~/bin/"$kubectl_cert_manager" version
+if am_root; then
+    /usr/local/bin/kubectl version --client --short
+else
+    ~/bin/kubectl version --client --short
+fi

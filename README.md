@@ -1,9 +1,8 @@
-Hari Sekhon - DevOps Bash Tools
-===============================
+# Hari Sekhon - DevOps Bash Tools
 
 [![GitHub stars](https://img.shields.io/github/stars/harisekhon/devops-bash-tools?logo=github)](https://github.com/HariSekhon/DevOps-Bash-tools/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/harisekhon/devops-bash-tools?logo=github)](https://github.com/HariSekhon/DevOps-Bash-tools/network)
-[![Lines of Code](https://img.shields.io/badge/lines%20of%20code-76k-lightgrey?logo=codecademy)](https://github.com/HariSekhon/DevOps-Bash-tools#hari-sekhon---devops-bash-tools)
+[![Lines of Code](https://img.shields.io/badge/lines%20of%20code-84k-lightgrey?logo=codecademy)](https://github.com/HariSekhon/DevOps-Bash-tools#hari-sekhon---devops-bash-tools)
 [![License](https://img.shields.io/badge/license-MIT-green)](https://github.com/HariSekhon/DevOps-Bash-tools/blob/master/LICENSE)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/HariSekhon/DevOps-Bash-tools?logo=github)](https://github.com/HariSekhon/DevOps-Bash-tools/commits/master)
 
@@ -91,8 +90,12 @@ Wercker throttles Shields.io resulting in "invalid response data" - do not use S
 [![Repo on GitLab](https://img.shields.io/badge/repo-GitLab-FCA121?logo=gitlab)](https://gitlab.com/HariSekhon/DevOps-Bash-tools)
 [![Repo on BitBucket](https://img.shields.io/badge/repo-BitBucket-0052CC?logo=bitbucket)](https://bitbucket.org/HariSekhon/DevOps-Bash-tools)
 [![ShellCheck](https://github.com/HariSekhon/DevOps-Bash-tools/actions/workflows/shellcheck.yaml/badge.svg)](https://github.com/HariSekhon/DevOps-Bash-tools/actions/workflows/shellcheck.yaml)
+[![JSON](https://github.com/HariSekhon/DevOps-Bash-tools/actions/workflows/json.yaml/badge.svg)](https://github.com/HariSekhon/DevOps-Bash-tools/actions/workflows/json.yaml)
+[![YAML](https://github.com/HariSekhon/DevOps-Bash-tools/actions/workflows/yaml.yaml/badge.svg)](https://github.com/HariSekhon/DevOps-Bash-tools/actions/workflows/yaml.yaml)
+[![XML](https://github.com/HariSekhon/DevOps-Bash-tools/actions/workflows/xml.yaml/badge.svg)](https://github.com/HariSekhon/DevOps-Bash-tools/actions/workflows/xml.yaml)
 [![Validation](https://github.com/HariSekhon/DevOps-Bash-tools/actions/workflows/validate.yaml/badge.svg)](https://github.com/HariSekhon/DevOps-Bash-tools/actions/workflows/validate.yaml)
 [![Semgrep](https://github.com/HariSekhon/DevOps-Bash-tools/actions/workflows/semgrep.yaml/badge.svg)](https://github.com/HariSekhon/DevOps-Bash-tools/actions/workflows/semgrep.yaml)
+[![Semgrep Cloud](https://github.com/HariSekhon/DevOps-Bash-tools/actions/workflows/semgrep-cloud.yaml/badge.svg)](https://github.com/HariSekhon/DevOps-Bash-tools/actions/workflows/semgrep-cloud.yaml)
 [![Kics](https://github.com/HariSekhon/DevOps-Bash-tools/actions/workflows/kics.yaml/badge.svg)](https://github.com/HariSekhon/DevOps-Bash-tools/actions/workflows/kics.yaml)
 
 [![Docker Build (Alpine)](https://github.com/HariSekhon/DevOps-Bash-tools/actions/workflows/docker_bash_alpine.yaml/badge.svg)](https://github.com/HariSekhon/DevOps-Bash-tools/actions/workflows/docker_bash_alpine.yaml)
@@ -135,7 +138,7 @@ Wercker throttles Shields.io resulting in "invalid response data" - do not use S
 
 [git.io/bash-tools](https://git.io/bash-tools)
 
-750+ DevOps Shell Scripts and Advanced Bash environment.
+800+ DevOps Shell Scripts and Advanced Bash environment.
 
 Fast, Advanced Systems Engineering, Automation, APIs, shorter CLIs, etc.
 
@@ -155,6 +158,7 @@ Heavily used in many [GitHub repos](https://github.com/search?o=desc&q=user%3Aha
 [GCloud SDK](https://cloud.google.com/sdk),
 [Terraform](https://www.terraform.io/),
 [Kubernetes](https://kubernetes.io/)
+[GitHub CLI](https://github.com/cli/cli),
 [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/) &
 [kustomize](https://kustomize.io/),
 [eksctl](https://eksctl.io/),
@@ -220,7 +224,7 @@ make
   - Azure DevOps Pipelines, GitHub Actions Workflows, GitLab CI, BitBucket Pipelines, AppVeyor, BuildKite, Travis CI, Circle CI, Codefresh, CodeShip, Drone.io, Semaphore CI, Shippable, Wercker ...
   - Terraform Cloud
   - Checkov / Bridgecrew Cloud
-- [Internet Services](https://github.com/HariSekhon/DevOps-Bash-tools#internet-services) - Cloudflare, Pingdom, NGrok, DataDog
+- [Internet Services](https://github.com/HariSekhon/DevOps-Bash-tools#internet-services) - Digital Ocean, Cloudflare, Pingdom, NGrok, DataDog
 - [Perl](https://github.com/HariSekhon/DevOps-Bash-tools#perl) - Perl utilities & library management
 - [Python](https://github.com/HariSekhon/DevOps-Bash-tools#python) - Python utilities & library management
 - [Golang](https://github.com/HariSekhon/DevOps-Bash-tools#golang) - Golang utilities
@@ -283,6 +287,7 @@ Sourced from all my other [GitHub repos](https://github.com/harisekhon) to make 
 [BuildKite](https://buildkite.com),
 [Parquet Tools](https://github.com/apache/parquet-mr/tree/master/parquet-tools)
 etc.
+- `login.sh` - logs to major Cloud platforms if their credentials are found in the environment, CLIs such as AWS, GCP, Azure, GitHub... Docker registries: DockerHub, GHCR, ECR, GCR, GAR, ACR, Gitlab, Quay...
 - `clean_caches.sh` - cleans out OS package and programming language caches - useful to save space or reduce Docker image size
 - `curl_auth.sh` - shortens `curl` command by auto-loading your OAuth2 / JWT API token or username & password from environment variables or interactive starred password prompt through a ram file descriptor to avoid placing them on the command line (which would expose your credentials in the process list or OS audit log files). Used by many other adjacent API querying scripts
 - `ldapsearch.sh` - shortens `ldapsearch` command by inferring switches from environment variables
@@ -323,7 +328,9 @@ etc.
   - `.envrc-aws` - copy to `.envrc` for `direnv` to auto-load AWS configuration settings such as AWS Profile, Compute Region, EKS cluster kubectl context etc.
     - calls `.envrc-kubernetes` to set the `kubectl` context isolated to current shell to prevent race conditions between shells and scripts caused by otherwise naively changing the global `~/.kube/config` context
   - `aws_terraform_create_s3_bucket.sh` - creates a Terraform S3 bucket for storing the backend state, locks out public access, enables versioning, encryption, and locks out Power Users role and optionally any given user/group/role ARNs via a bucket policy for safety
-  - `aws_terraform_create_dynamodb_table.sh` - creates a Terraform locking table in DynamoDB for use with the S3 backend
+  - `aws_terraform_create_dynamodb_table.sh` - creates a Terraform locking table in DynamoDB for use with the S3 backend, plus custom IAM policy which can be applied to less privileged accounts
+  - `aws_terraform_create_all.sh` - runs all of the above, plus also applies the custom DynamoDB IAM policy to the user to ensure if the account is less privileged it can still get the Terraform lock (useful for GitHub Actions environment secret for a read only user to generate Terraform Plans in Pull Request without needing approval)
+  - `aws_terraform_iam_grant_s3_dynamodb.sh` - creates IAM policies to access any S3 buckets and DynamoDB tables with `terraform-state` or `tf-state` in their names, and attaches them to the given user. Useful for limited permissions CI/CD accounts that run Terraform Plan eg. in GitHub Actions pull requests
   - `aws_account_summary.sh` - prints AWS account summary in `key = value` pairs for easy viewing / grepping of things like `AccountMFAEnabled`, `AccountAccessKeysPresent`, useful for checking whether the root account has MFA enabled and no access keys, comparing number of users vs number of MFA devices etc. (see also `check_aws_root_account.py` in [Advanced Nagios Plugins](https://github.com/HariSekhon/Nagios-Plugins))
   - `aws_billing_alarm.sh` - creates a [CloudWatch](https://aws.amazon.com/cloudwatch/) billing alarm and [SNS](https://aws.amazon.com/sns/) topic with subscription to email you when you incur charges above a given threshold. This is often the first thing you want to do on an account
   - `aws_budget_alarm.sh` - creates an [AWS Budgets](https://aws.amazon.com/cloudwatch/) billing alarm and [SNS](https://aws.amazon.com/sns/) topic with subscription to email you when both when you start incurring forecasted charges of over 80% of your budget, and 90% actual usage. This is often the first thing you want to do on an account
@@ -336,7 +343,7 @@ etc.
   - `aws_cloudtrails_status.sh` - lists [Cloud Trails](https://aws.amazon.com/cloudtrail/) status - if logging, multi-region and log file validation enabled
   - `aws_config_all_types.sh` - lists [AWS Config](https://aws.amazon.com/config/) recorders, checking all resource types are supported (should be true) and includes global resources (should be true)
   - `aws_config_recording.sh` - lists [AWS Config](https://aws.amazon.com/config/) recorders, their recording status (should be true) and their last status (should be success)
-  - `aws_csv_creds.sh` - prints AWS credentials from a CSV file as shell export statements. Useful to quickly switch your shell to some exported credentials from a service account for testing permissions or pipe to upload to a CI/CD system via an API (eg. `github_actions_repo*_set_secret.sh`, `gitlab_*_set_env_vars.sh`, `circleci_*_set_env_vars.sh`, `bitbucket_*_set_env_vars.sh`, `terraform_cloud_*_set_vars.sh`, `kubectl_kv_to_secret.sh`). Supports new user and new access key csv file formats.
+  - `aws_csv_creds.sh` - prints AWS credentials from a CSV file as shell export statements. Useful to quickly switch your shell to some exported credentials from a service account for testing permissions or pipe to upload to a CI/CD system via an API (eg. `jenkins_cred_add*.sh`, `github_actions_repo*_set_secret.sh`, `gitlab_*_set_env_vars.sh`, `circleci_*_set_env_vars.sh`, `bitbucket_*_set_env_vars.sh`, `terraform_cloud_*_set_vars.sh`, `kubectl_kv_to_secret.sh`). Supports new user and new access key csv file formats.
   - `aws_codecommit_csv_creds.sh` - prints AWS [CodeCommit](https://aws.amazon.com/codecommit/) Git credentials from a CSV file as shell export statements. Similar use case and chaining as above
   - `aws_ecr_*.sh` - [AWS ECR](https://aws.amazon.com/ecr/) docker image management scripts:
     - `aws_ecr_docker_build_push.sh` - builds a docker image and pushes it to ECR with not just the `latest` docker tag but also the current Git hashref and Git tags
@@ -361,6 +368,8 @@ etc.
     - `aws_iam_policies_attached_to_users.sh` - finds [AWS IAM policies](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage.html) directly attached to users (anti-best practice) instead of groups
     - `aws_iam_policies_granting_full_access.sh` - finds [AWS IAM policies](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage.html) granting full access (anti-best practice)
     - `aws_iam_policies_unattached.sh` - lists unattached [AWS IAM policies](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage.html)
+    - `aws_iam_policy_attachments.sh` - finds all users, groups and roles where a given IAM policy is attached, so that you can remove all these references in your Terraform code and avoid this error `Error: error deleting IAM policy arn:aws:iam::***:policy/mypolicy: DeleteConflict: Cannot delete a policy attached to entities.`
+    - `aws_iam_policy_delete.sh` - deletes an IAM policy, by first handling all prerequisite steps of deleting all prior versions and all detaching all users, groups and roles
     - `aws_iam_generate_credentials_report_wait.sh` - generates an AWS IAM [credentials report](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_getting-report.html)
     - `aws_iam_users.sh` - list your IAM users
     - `aws_iam_users_access_key_age.sh` - prints AWS users [access key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) status and age (see also `aws_users_access_key_age.py` in [DevOps Python tools](https://github.com/HariSekhon/DevOps-Python-tools) which can filter by age and status)
@@ -381,6 +390,7 @@ etc.
     - `aws_logs_ecs_tasks.sh` - lists AWS ECS task run requests, their callers and job definitions
   - `aws_meta.sh` - [AWS EC2 Metadata API](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html) query shortcut. See also the official [ec2-metadata](https://aws.amazon.com/code/ec2-instance-metadata-query-tool/) shell script with more features
   - `aws_nat_gateways_public_ips.sh` - lists the public IPs of all NAT gateways. Useful to give to clients to permit through firewalls for webhooks or similar calls
+  - `aws_route53_check_ns_records.sh` - checks AWS [Route 53](https://aws.amazon.com/route53/) public hosted zones NS servers are delegated in the public DNS hierarchy and that there are no rogue NS servers delegated not matching the Route 53 zone configuration
   - `aws_sso_env_creds.sh` - retrieves AWS SSO session credentials in the format of environment export commands for copying to other systems like Terraform Cloud
   - `aws_s3_bucket.sh` - creates an S3 bucket, blocks public access, enables versioning, encryption, and optionally locks out any given user/group/role ARNs via a bucket policy for safety (eg. to stop Power Users accessing a sensitive bucket like Terraform state)
   - `aws_s3_buckets_block_public_access.sh` - blocks public access to one or more given S3 buckets or files containing bucket names, one per line
@@ -389,8 +399,8 @@ etc.
   - `aws_s3_check_account_public_blocked.sh` - checks S3 public access is blocked at the AWS account level
   - `aws_s3_access_logging.sh` - lists [AWS S3](https://aws.amazon.com/s3/) buckets and their [access logging](https://docs.aws.amazon.com/AmazonS3/latest/dev/ServerLogs.html) status
   - `aws_spot_when_terminated.sh` - executes commands when the [AWS EC2](https://aws.amazon.com/ec2/) instance running this script is notified of [Spot Termination](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-instances.html), acts as a latch mechanism that can be set any time after boot
-  - `aws_sqs_check.sh` - sends a test message to an [SQS](https://aws.amazon.com/sqs/) queue, retrieves it to check and then deletes it via the receipt handle id
-  - `aws_sqs_delete_message.sh` - deletes 1-10 messages from a given [SQS](https://aws.amazon.com/sqs/) queue (to help clear out test messages)
+  - `aws_sqs_check.sh` - sends a test message to an [AWS SQS](https://aws.amazon.com/sqs/) queue, retrieves it to check and then deletes it via the receipt handle id
+  - `aws_sqs_delete_message.sh` - deletes 1-10 messages from a given [AWS SQS](https://aws.amazon.com/sqs/) queue (to help clear out test messages)
   - `aws_ssm_put_param.sh` - reads a value from a command line argument or non-echo prompt and saves it to AWS [Systems Manager Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/what-is-systems-manager.html). Useful for uploading a password without exposing it on your screen
   - `aws_secret*.sh` - AWS [Secrets Manager](https://aws.amazon.com/secrets-manager/) scripts:
     - `aws_secret_list.sh` - returns the list of secrets, one per line
@@ -574,7 +584,7 @@ etc.
   - `dockerhub_search.sh` - searches with a configurable number of returned items (older docker cli was limited to 25 results)
   - `clean_caches.sh` - cleans out OS package and programming language caches, call near end of `Dockerfile` to reduce Docker image size
   - see also the [Dockerfiles](https://github.com/HariSekhon/Dockerfiles) repo
-- `quay.io_api.sh` - queries the [Quay.io](https://quay.io/) API with OAuth2 authentication token `$QUAY_TOKEN`
+- `quay_api.sh` - queries the [Quay.io](https://quay.io/) API with OAuth2 authentication token `$QUAY_TOKEN`
 
 #### Big Data & NoSQL
 
@@ -632,8 +642,9 @@ etc.
   - `git_files_in_history.sh` - finds all filename / file paths in the git log history, useful for prepping for `git filter-branch`
   - `git_filter_branch_fix_author.sh` - rewrites Git history to replace author/committer name & email references (useful to replace default account commits). Powerful, read `--help` and `man git-filter-branch` carefully. Should only be used by Git Experts.
   - `git_submodules_update_repos.sh` - updates submodules (pulls and commits latest upstream github repo submodules) - used to cascade submodule updates throughout all my repos
-- `github_*.sh` - [GitHub](https://github.com/) API scripts:
+- `github_*.sh` - [GitHub](https://github.com/) API / CLI scripts:
   - `github_api.sh` - queries the GitHub [API](https://docs.github.com/en/rest/reference). Can infer GitHub user, repo and authentication token from local checkout or environment (`$GITHUB_USER`, `$GITHUB_TOKEN`)
+  - `github_install_binary.sh` - installs a binary from GitHub releases into $HOME/bin or /usr/local/bin. Auto-determines the latest release if no version specified, detects and unpacks any tarball or zip files
   - `github_foreach_repo.sh` - executes a templated command for each non-fork GitHub repo, replacing the `{owner}`/`{name}` or `{repo}` placeholders in each iteration
   - `github_invitations.sh` - lists / accepts repo invitations. Useful to accept a large number of invites to repos generated by automation
   - `github_mirror_repos_to_gitlab.sh` - creates/syncs GitHub repos to GitLab for migrations or to cron fast free Disaster Recovery, including all branches and tags, plus the repo descriptions. Note this doesn't include PRs/wikis/releases
@@ -675,6 +686,7 @@ etc.
   - `github_generate_status_page.sh` - generates a [STATUS.md](https://harisekhon.github.io/CI-CD/) page by merging all the README.md headers for all of a user's non-forked GitHub repos or a given list of any repos etc.
   - `github_ip_ranges.sh` - returns GitHub's IP ranges, either all by default or for a select given service such as hooks or actions
   - `github_sync_repo_descriptions.sh` - syncs GitHub repo descriptions to GitLab & BitBucket repos
+  - `github_release.sh` - creates a GitHub Release, auto-incrementing a `.N` suffix on the year/month/day date format if no exact version given
   - `github_repo_description.sh` - fetches the given repo's description (used by `github_sync_repo_descriptions.sh`)
   - `github_repo_latest_release.sh` - returns the latest release tag for a given GitHub repo via the GitHub API
   - `github_repo_latest_release_filter.sh` - returns the latest release tag matching a given regex filter for a given GitHub repo via the GitHub API. Useful for getting the latest version of things like Kustomize which has other releases for kyaml
@@ -682,6 +694,7 @@ etc.
   - `github_repo_teams.sh` - fetches the GitHub Enterprise teams and their role permisions for a given repo. Combine with `github_foreach_repo.sh` to audit your all your personal or GitHub organization's repos
   - `github_repo_collaborators.sh` - fetches a repo's granted users and outside invited collaborators as well as their role permisions for a given repo. Combine with `github_foreach_repo.sh` to audit your all your personal or GitHub organization's repos
   - `github_repo_protect_branches.sh` - enables branch protections on the given repo. Can specify one or more branches to protect, otherwise finds and applies to any of `master`, `main`, `develop`, `dev`, `staging`, `production`
+  - `github_repo_fork_sync.sh` - sync's current or given fork, then runs `github_repo_fork_update.sh` to cascade changes to major branches via Pull Requests for auditability
   - `github_repo_fork_update.sh` - updates a forked repo by creating pull requests for full audit tracking and auto-merges PRs for non-production branches
   - `github_repos_public.sh` - lists public repos for a user or organization. Useful to periodically scan and account for any public repos
   - `github_repos_disable_wiki.sh` - disables the Wiki on one or more given repos to prevent documentation fragmentation and make people use the centralized documentation tool eg. Confluence or Slite
@@ -736,17 +749,96 @@ etc.
 - `shippable_api.sh` - queries [Shippable](https://www.shippable.com/)'s API with authentication
 - `wercker_app_api.sh` - queries [Wercker](https://app.wercker.com/)'s Applications API with authentication
 - `gocd_api.sh` - queries [GoCD](https://www.gocd.org/)'s API
-- `gocd.sh` - one-touch [GoCD CI](https://www.gocd.org/), launches in docker, (re)creates config repo (`$PWD/setup/gocd_config_repo.json`) from which to source pipeline(s) (`.gocd.yml`), detects and enables agent(s) to start building. Call from any repo top level directory with a `.gocd.yml` config (all mine have it), mimicking structure of fully managed CI systems
-- `concourse.sh` - one-touch [Concourse CI](https://concourse-ci.org/), launches in docker, configures pipeline from `$PWD/.concourse.yml`, triggers build, tails results in terminal, prints recent build statuses at end. Call from any repo top level directory with a `.concourse.yml` config (all mine have it), mimicking structure of fully managed CI systems
-  - `fly.sh` - shortens `fly` command to not have to specify target all the time
+- `gocd.sh` - one-touch [GoCD CI](https://www.gocd.org/):
+    - launches in Docker
+    - (re)creates config repo (`$PWD/setup/gocd_config_repo.json`) from which to source pipeline(s) (`.gocd.yml`)
+    - detects and enables agent(s) to start building
+    - call from any repo top level directory with a `.gocd.yml` config (all mine have it), mimicking structure of fully managed CI systems
+- `concourse.sh` - one-touch [Concourse CI](https://concourse-ci.org/):
+  - launches in Docker
+  - configures pipeline from `$PWD/.concourse.yml`
+  - triggers build
+  - tails results in terminal
+  - prints recent build statuses at end
+  - call from any repo top level directory with a `.concourse.yml` config (all mine have it), mimicking structure of fully managed CI systems
+- `fly.sh` - shortens [Concourse](https://concourse-ci.org/) `fly` command to not have to specify target all the time
 - `jenkins_*.sh` - [Jenkins CI](https://jenkins.io/) scripts:
-  - `jenkins.sh` - one-touch [Jenkins CI](https://jenkins.io/) - launches docker container, installs plugins, validates `Jenkinsfile`, configures jobs from `$PWD/setup/jenkins-job.xml` and sets Pipeline to git remote origin's `Jenkinsfile`, triggers build, tails results in terminal. Call from any repo top level directory with a `Jenkinsfile` pipeline and `setup/jenkins-job.xml` (all mine have it)
-  - `jenkins_cli.sh` - shortens `jenkins-cli.jar` command by auto-inferring basic configuations, auto-downloading the CLI if absent, inferrings a bunch of Jenkins related variables like `$JENKINS_URL` and authentication using `$JENKINS_USER`/`$JENKINS_PASSWORD`, or finds admin password from inside local docker container. Used heavily by `jenkins.sh` one-shot setup
-    - `jenkins_password.sh` - gets Jenkins admin password from local docker container. Used by `jenkins_cli.sh`
+  - `jenkins.sh` - one-touch [Jenkins CI](https://jenkins.io/):
+    - launches Docker container
+    - installs plugins
+    - validates `Jenkinsfile`
+    - configures job from `$PWD/setup/jenkins-job.xml`
+    - sets Pipeline to git remote origin's `Jenkinsfile`
+    - triggers build
+    - tails results in terminal
+    - call from any repo top level directory with a `Jenkinsfile` pipeline and `setup/jenkins-job.xml` (all mine have it)
+  - `jenkins_api.sh` - queries the Jenkins Rest API, handles authentication, pre-fetches CSFR protection token crumb, supports many environment variables such as `$JENKINS_URL` for ease of use
+    - `jenkins_jobs.sh` - lists Jenkins jobs (pipelines)
+    - `jenkins_foreach_job.sh` - runs a templated command for each Jenkins job
+    - `jenkins_jobs_download_configs.sh` - downloads all Jenkins job configs to xml files of the same name
+    - `jenkins_job_config.sh` - gets or sets a Jenkins job's config
+    - `jenkins_job_description.sh` - gets or sets a Jenkins job's description
+    - `jenkins_job_enable.sh` - enables a Jenkins job by name
+    - `jenkins_job_disable.sh` - disables a Jenkins job by name
+    - `jenkins_job_trigger.sh` - triggers a Jenkins job by name
+    - `jenkins_job_trigger_with_params.sh` - triggers a Jenkins job with parameters which can be passed as `--data KEY=VALUE`
+    - `jenkins_builds.sh` - lists Jenkins latest builds for every job
+    - `jenkins_cred_add_cert.sh` - creates a Jenkins certificate credential from a PKCS#12 keystore
+    - `jenkins_cred_add_kubernetes_sa.sh` - creates a Jenkins Kubernetes service account credential
+    - `jenkins_cred_add_secret_file.sh` - creates a Jenkins secret file credential from a file
+    - `jenkins_cred_add_secret_text.sh` - creates a Jenkins secret string credential from a string or a file
+    - `jenkins_cred_add_ssh_key.sh` - creates a Jenkins SSH key credential from a string or an SSH private key file
+    - `jenkins_cred_add_user_pass.sh` - creates a Jenkins username/password credential
+    - `jenkins_cred_delete.sh` - deletes a given Jenkins credential by id
+    - `jenkins_cred_list.sh` - lists Jenkins credentials IDs and Names
+    - `jenkins_cred_update_cert.sh` - updates a Jenkins certificate credential from a PKCS#12 keystore
+    - `jenkins_cred_update_kubernetes_sa.sh` - updates a Jenkins Kubernetes service account credential
+    - `jenkins_cred_update_secret_file.sh` - updates a Jenkins secret file credential from a file
+    - `jenkins_cred_update_secret_text.sh` - updates a Jenkins secret string credential from a string or a file
+    - `jenkins_cred_update_ssh_key.sh` - updates a Jenkins SSH key credential from a string or an SSH private key file
+    - `jenkins_cred_update_user_pass.sh` - updates a Jenkins username/password credential
+    - `jenkins_cred_set_cert.sh` - creates or updates a Jenkins certificate credential from a PKCS#12 keystore
+    - `jenkins_cred_set_kubernetes_sa.sh` - creates or updates a Jenkins Kubernetes service account credential
+    - `jenkins_cred_set_secret_file.sh` - creates or updates a Jenkins secret file credential from a file
+    - `jenkins_cred_set_secret_text.sh` - creates or updates a Jenkins secret string credential from a string or a file
+    - `jenkins_cred_set_ssh_key.sh` - creates or updates a Jenkins SSH key credential from a string or an SSH private key file
+    - `jenkins_cred_set_user_pass.sh` - creates or updates a Jenkins username/password credential
+  - `jenkins_cli.sh` - shortens `jenkins-cli.jar` command by auto-inferring basic configuations, auto-downloading the CLI if absent, inferrings a bunch of Jenkins related variables like `$JENKINS_URL`, `$JENKINS_CLI_ARGS` and authentication using `$JENKINS_USER`/`$JENKINS_PASSWORD`, or finds admin password from inside local docker container. Used heavily by `jenkins.sh` one-shot setup and the following scripts:
+    - `jenkins_foreach_job_cli.sh` - runs a templated command for each Jenkins job
+    - `jenkins_jobs_download_configs_cli.sh` - downloads all Jenkins job configs to xml files of the same name
+    - `jenkins_cred_cli_add_cert.sh` - creates a Jenkins certificate credential from a PKCS#12 keystore
+    - `jenkins_cred_cli_add_kubernetes_sa.sh` - creates a Jenkins Kubernetes service account credential
+    - `jenkins_cred_cli_add_secret_file.sh` - creates a Jenkins secret file credential from a file
+    - `jenkins_cred_cli_add_secret_text.sh` - creates a Jenkins secret string credential from a string or a file
+    - `jenkins_cred_cli_add_ssh_key.sh` - creates a Jenkins SSH key credential from a string or an SSH private key file
+    - `jenkins_cred_cli_add_user_pass.sh` - creates a Jenkins username/password credential
+    - `jenkins_cred_cli_delete.sh` - deletes a given Jenkins credential by id
+    - `jenkins_cred_cli_list.sh` - lists Jenkins credentials IDs and Names
+    - `jenkins_cred_cli_update_cert.sh` - updates a Jenkins certificate credential from a PKCS#12 keystore
+    - `jenkins_cred_cli_update_kubernetes_sa.sh` - updates a Jenkins Kubernetes service account credential
+    - `jenkins_cred_cli_update_secret_file.sh` - updates a Jenkins secret file credential from a file
+    - `jenkins_cred_cli_update_secret_text.sh` - updates a Jenkins secret string credential from a string or a file
+    - `jenkins_cred_cli_update_ssh_key.sh` - updates a Jenkins SSH key credential from a string or an SSH private key file
+    - `jenkins_cred_cli_update_user_pass.sh` - updates a Jenkins username/password credential
+    - `jenkins_cred_cli_set_cert.sh` - creates or updates a Jenkins certificate credential from a PKCS#12 keystore
+    - `jenkins_cred_cli_set_kubernetes_sa.sh` - creates or updates a Jenkins Kubernetes service account credential
+    - `jenkins_cred_cli_set_secret_file.sh` - creates or updates a Jenkins secret file credential from a file
+    - `jenkins_cred_cli_set_secret_text.sh` - creates or updates a Jenkins secret string credential from a string or a file
+    - `jenkins_cred_cli_set_ssh_key.sh` - creates or updates a Jenkins SSH key credential from a string or an SSH private key file
+    - `jenkins_cred_cli_set_user_pass.sh` - creates or updates a Jenkins username/password credential
+  - `jenkins_password.sh` - gets Jenkins admin password from local docker container. Used by `jenkins_cli.sh`
   - `check_jenkinsfiles.sh` - validates all `*Jenkinsfile*` files in the given directory trees using the online Jenkins validator
 - `teamcity_*.sh` - [TeamCity CI](https://www.jetbrains.com/teamcity/) scripts:
-  - `teamcity.sh` - boots TeamCity CI cluster in docker, just click proceed and accept the EULA and it does the rest, it even creates an admin user and an API token for you
-  - See Also: [TeamCity CI](https://github.com/HariSekhon/TeamCity-CI) config repo
+  - `teamcity.sh` - one-touch [TeamCity CI](https://www.jetbrains.com/teamcity/) cluster:
+    - launches Docker containers with server and 1 agent
+    - click proceed and accept the EULA
+    - waits for server to initialize
+    - waits for agent to register
+    - authorizes agent
+    - creates a VCS Root if `$PWD` has a `.teamcity.vcs.json` / `.teamcity.vcs.ssh.json` / `.teamcity.vcs.oauth.json` and corresponding `$TEAMCITY_SSH_KEY` or `$TEAMCITY_GITHUB_CLIENT_ID`+`$TEAMCITY_GITHUB_CLIENT_SECRET` environment variables
+    - creates a Project and imports all settings and builds from the VCS Root
+    - creates an admin user and an API token for you
+    - see also: [TeamCity CI](https://github.com/HariSekhon/TeamCity-CI) config repo for importing pipelines
   - `teamcity_api.sh` - queries TeamCity's API, auto-handling authentication and other quirks of the API
   - `teamcity_create_project.sh` - creates a TeamCity project using the API
   - `teamcity_create_github_oauth_connection.sh` - creates a TeamCity GitHub OAuth VCS connection in the Root project, useful for bootstrapping projects from VCS configs
@@ -841,11 +933,12 @@ etc.
 
 #### Internet Services
 
+- `digital_ocean_api.sh` / `doapi.sh` - queries the [Digital Ocean](https://www.digitalocean.com/) API with authentication
+  - see also the Digital Ocean CLI `doctl` (`setup/install_doctl.sh`)
 - `atlassian_ip_ranges.sh` - lists [Atlassian](https://www.atlassian.com/)'s IPv4 and/or IPv6 cidr ranges via its API
-- `jira_api.sh` - queries [Jira](https://www.atlassian.com/software/jira) API with authentication
 - `circleci_public_ips.sh` - lists [CircleCI](https://circleci.com) public IP addresses via dnsjson.com
 - `cloudflare_*.sh` - [Cloudflare](https://www.cloudflare.com/) API queries and reports:
-  - `cloudflare_api.sh` - queries the Cloudflare API, handling authentication using `$CLOUDFLARE_TOKEN`
+  - `cloudflare_api.sh` - queries the Cloudflare API with authentication
   - `cloudflare_ip_ranges.sh` - lists Cloudflare's IPv4 and/or IPv6 cidr ranges via its API
   - `cloudflare_custom_certificates.sh` - lists any custom SSL certificates in a given Cloudflare zone along with their status and expiry date
   - `cloudflare_dns_records.sh` - lists any Cloudflare DNS records for a zone, including the type and ttl
@@ -859,16 +952,18 @@ etc.
   - `cloudflare_ssl_verified.sh` - gets the Cloudflare zone SSL verification status for a given zone
   - `cloudflare_ssl_verified_all_zones.sh` - same as above for all zones
   - `cloudflare_zones.sh` - lists Cloudflare zone names and IDs (needed for writing Terraform Cloudflare code)
-- `ngrok_api.sh` - queries the [NGrok](https://ngrok.com/) API
+- `datadog_api.sh` - queries the [DataDog](https://www.datadoghq.com/) API with authentication
+- `jira_api.sh` - queries [Jira](https://www.atlassian.com/software/jira) API with authentication
+- `ngrok_api.sh` - queries the [NGrok](https://ngrok.com/) API with authentication
 - `pingdom_*.sh` - [Pingdom](https://www.pingdom.com/) API queries and reports for status, latency, average response times, latency averages by hour, SMS credits, outages periods and durations over the last year etc.
-  - `pingdom_api.sh` - Solarwinds [Pingdom](https://www.pingdom.com/) [API](https://docs.pingdom.com/api/) query script
-  - `pingdom_foreach_check.sh` - executes a templated command against each [Pingdom](https://www.pingdom.com/) check, replacing the `{check_id}` and `{check_name}` in each iteration
+  - `pingdom_api.sh` - queries the Solarwinds [Pingdom](https://www.pingdom.com/) API with authentication
+  - `pingdom_foreach_check.sh` - executes a templated command against each Pingdom check, replacing the `{check_id}` and `{check_name}` in each iteration
   - `pingdom_checks.sh` - show all Pingdom checks, status and latencies
   - `pingdom_checks_outages.sh` / `pingdom_checks_outages.sh` - show one or all Pingdom checks outage histories for the last year
   - `pingdom_checks_average_response_times.sh` - shows the average response times for all Pingdom checks for the last week
   - `pingdom_check_latency_by_hour.sh` / `pingdom_checks_latency_by_hour.sh` - shows the average latency for one or all Pingdom checks broken down by hour of the day, over the last week
   - `pingdom_sms_credits.sh` - gets the remaining number of Pingdom SMS credits
-- `datadog_api.sh` - queries the [DataDog](https://www.datadoghq.com/) API with authentication
+- `terraform_cloud_api.sh` - queries [Terraform Cloud](https://www.terraform.io/cloud) API with authentication
 - `terraform_cloud_ip_ranges.sh` - returns the list of IP ranges for [Terraform Cloud](https://www.terraform.io/cloud) via the API, or optionally one or more of the ranges used by different functions
 
 #### Perl
@@ -1024,7 +1119,7 @@ etc.
 - `json2yaml.sh` - converts JSON to YAML
 - `yaml2json.sh` - converts YAML to JSON - needed for some APIs like GitLab CI linting (see [Gitlab](https://github.com/HariSekhon/DevOps-Bash-tools#git---github-gitlab-bitbucket-azure-devops) section above)
 
-### See Also
+## Related Repositories
 
 - [DevOps Python Tools](https://github.com/HariSekhon/DevOps-Python-tools) - 80+ DevOps CLI tools for AWS, GCP, Hadoop, HBase, Spark, Log Anonymizer, Ambari Blueprints, AWS CloudFormation, Linux, Docker, Spark Data Converters & Validators (Avro / Parquet / JSON / CSV / INI / XML / YAML), Elasticsearch, Solr, Travis CI, Pig, IPython
 
@@ -1033,6 +1128,8 @@ etc.
 - [Templates](https://github.com/HariSekhon/Templates) - dozens of Code & Config templates - AWS, GCP, Docker, Jenkins, Terraform, Vagrant, Puppet, Python, Bash, Go, Perl, Java, Scala, Groovy, Maven, SBT, Gradle, Make, GitHub Actions Workflows, CircleCI, Jenkinsfile, Makefile, Dockerfile, docker-compose.yml, M4 etc.
 
 - [Kubernetes configs](https://github.com/HariSekhon/Kubernetes-configs) - Kubernetes YAML configs - Best Practices, Tips & Tricks are baked right into the templates for future deployments
+
+- [Terraform](https://github.com/HariSekhon/Terraform) - Terraform templates for AWS / GCP / Azure / GitHub management
 
 - [The Advanced Nagios Plugins Collection](https://github.com/HariSekhon/Nagios-Plugins) - 450+ programs for Nagios monitoring your Hadoop & NoSQL clusters. Covers every Hadoop vendor's management API and every major NoSQL technology (HBase, Cassandra, MongoDB, Elasticsearch, Solr, Riak, Redis etc.) as well as message queues (Kafka, RabbitMQ), continuous integration (Jenkins, Travis CI) and traditional infrastructure (SSL, Whois, DNS, Linux)
 
@@ -1174,6 +1271,7 @@ make python
     make aws                    installs AWS CLI tools
     make azure                  installs Azure CLI
     make gcp                    installs Google Cloud SDK
+    make digital-ocean          installs Digital Ocean CLI
 
     make aws-shell              sets up AWS Cloud Shell: installs core packages and links configs
                                 (maintains itself across future Cloud Shells via .aws_customize_environment hook)

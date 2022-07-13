@@ -27,16 +27,13 @@ Installs TFSec CLI by AquaSec
 
 # used by usage() in lib/utils.sh
 # shellcheck disable=SC2034
-usage_args=""
+usage_args="[<version>]"
 
 help_usage "$@"
 
-#min_args 1 "$@"
+#version="${1:-0.63.1}"
+version="${1:-latest}"
 
-version="${1:-0.63.1}"
+export RUN_VERSION_OPT=1
 
-if ! [[ "$version" =~ ^v ]]; then
-    version="v$version"
-fi
-
-"$srcdir/../install_binary.sh" "https://github.com/aquasecurity/tfsec/releases/download/$version/tfsec-{os}-{arch}"
+"$srcdir/../github_install_binary.sh" aquasecurity/tfsec 'tfsec-{os}-{arch}' "$version"

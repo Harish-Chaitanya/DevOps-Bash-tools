@@ -72,11 +72,11 @@ tar zxf "$tarball"
 echo
 
 echo "removing tarball:"
-rm -v "$tarball"
+rm -fv -- "$tarball"
 echo
 
 echo "symlinking install dir:"
-ln -sfhv "$installdir" ~/bin/kics
+ln -sfhv -- "$installdir" ~/bin/kics
 echo
 
 echo "Ensure $HOME/bin/kics is added to your \$PATH"

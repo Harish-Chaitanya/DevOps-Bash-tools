@@ -559,7 +559,9 @@ gitu(){
     #targets=("$(strip_basedirs "$basedir" "$targets")")
     for filename in "$@"; do
         # follow symlinks to the actual files because diffing symlinks returns no changes
-        filename="$(resolve_symlinks "$filename")"
+        if [ "$filename" != . ]; then
+            filename="$(resolve_symlinks "$filename")"
+        fi
         # go to the highest directory level to git diff inside the git repo boundary, otherwise git diff will return nothing
         basedir="$(basedir "$filename")" || return 1
         pushd "$basedir" >/dev/null || return 1
@@ -678,6 +680,7 @@ push(){
 }
 pushu(){
     push "$@" --set-upstream origin "$(git branch | awk '/^\*/{print $2}')"
+    github_pull_request
 }
 pushr(){
     for remote in $(git remote); do
@@ -685,6 +688,29 @@ pushr(){
         git push "$remote"
         echo
     done
+}
+
+github_pull_request(){
+    if git remote -v | grep -q '^origin.*github.com[/:]'; then
+        local owner_repo
+        local current_branch
+        local default_branch
+        owner_repo="$(git remote -v | grep -m1 '^origin.*github.com[/:]' | sed 's|.*github.com[:/]||; s/\.git.*//; s/[[:space:]].*//')"
+        current_branch="$(currentbranch)"
+        default_branch="$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')"
+        #url="https://github.com/$owner_repo/pull/new/$branch"
+        # from your current branch to the default branch by default
+        url="https://github.com/$owner_repo/compare/$default_branch...$current_branch"
+        if is_mac; then
+            echo "Opening Pull Request"
+            open "$url"
+        fi
+    fi
+}
+alias pr=github_pull_request
+
+currentbranch(){
+    git rev-parse --abbrev-ref HEAD
 }
 
 switchbranch(){
@@ -699,17 +725,17 @@ switchbranch(){
 }
 
 gitrm(){
-    git rm "$@" &&
+    git rm -- "$@" &&
     git commit -m "removed $*" "$@"
 }
 
 gitrename(){
-    git mv "$1" "$2" &&
+    git mv -- "$1" "$2" &&
     git commit -m "renamed $1 to $2" "$1" "$2"
 }
 
 gitmv(){
-    git mv "$1" "$2" &&
+    git mv -- "$1" "$2" &&
     git commit -m "moved $1 to $2" "$1" "$2"
 }
 
@@ -916,7 +942,7 @@ git_rm_untracked(){
             # this doesn't help because you are still stuck with \xxx chars throughout
             #filename="${filename#\"}"
             #filename="${filename%\"}"
-            rm -v "$filename" || break
+            rm -v -- "$filename" || break
         done
     done
 }

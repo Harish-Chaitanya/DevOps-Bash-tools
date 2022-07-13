@@ -48,7 +48,7 @@ bash_tools_start_time="$(start_timer)"
 # don't run this here, it needs to be called explicitly otherwise will fail 'make test deep-clean'
 #"$srcdir/check_docker_clean.sh"
 
-if ! [ -n "${BASH_EXCLUDED_FILES_FUNCTION:-}" ]; then
+if [ -z "${BASH_EXCLUDED_FILES_FUNCTION:-}" ]; then
     if [ -f tests/excluded.sh ]; then
         export BASH_EXCLUDED_FILES_FUNCTION=tests/excluded.sh
     fi
@@ -109,6 +109,8 @@ fi
 "$srcdir/check_bash_references.sh" . $(for x in setup lib; do [ -f "$x" ] && echo "$x"; done)
 
 "$srcdir/check_bash_arrays.sh"
+
+"$srcdir/check_shell_commands_dash_protections.sh"
 
 "$srcdir/check_tests_run_qualified.sh"
 
@@ -184,12 +186,24 @@ fi
 
 "$srcdir/check_readme_badges.sh"
 
-"$srcdir/check_circleci_config.sh"
-"$srcdir/check_concourse_config.sh"
-"$srcdir/check_codefresh_config.sh"
-"$srcdir/check_drone_yml.sh"
-"$srcdir/check_gitlab_ci_yml.sh"
-"$srcdir/check_travis_yml.sh" || :  # broken library dependency highline on Fedora
+if [ -z "${NO_CIRCLECI_CHECK:-}" ]; then
+    "$srcdir/check_circleci_config.sh"
+fi
+if [ -z "${NO_CONCOURSE_CHECK:-}" ]; then
+    "$srcdir/check_concourse_config.sh"
+fi
+if [ -z "${NO_CODEFRESH_CHECK:-}" ]; then
+    "$srcdir/check_codefresh_config.sh"
+fi
+if [ -z "${NO_DRONE_CHECK:-}" ]; then
+    "$srcdir/check_drone_yml.sh"
+fi
+if [ -z "${NO_GITLAB_CHECK:-}" ]; then
+    "$srcdir/check_gitlab_ci_yml.sh"
+fi
+if [ -z "${NO_TRAVISCI_CHECK:-}" ]; then
+    "$srcdir/check_travis_yml.sh" || :  # broken library dependency highline on Fedora
+fi
 if ! is_CI &&
    [ -n "${SHIPPABLE_TOKEN:-}" ]; then
     "$srcdir/check_shippable_readme_ids.sh"

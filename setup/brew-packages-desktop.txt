@@ -70,6 +70,7 @@ dnsmasq
 dnstop
 docker-completion
 docker-compose-completion
+doctl  # Digital Ocean CLI
 dos2unix
 drone-cli
 e2fsprogs
@@ -113,6 +114,7 @@ jenkins-x/jx/jx
 #jpeg
 #jq  # in brew-packages.txt
 jython
+k6
 kompose
 #kubectl  # old version, download binary or use GCloud SDK version
 kubernetes-cli

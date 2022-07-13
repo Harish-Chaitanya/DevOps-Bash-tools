@@ -25,7 +25,7 @@ bash_tools="${bash_tools:-$(dirname "${BASH_SOURCE[0]}")/..}"
 # shellcheck disable=SC1090
 . "$bash_tools/.bash.d/os_detection.sh"
 
-isMac || return
+is_mac || return
 
 alias osash="osascript -i"
 alias osashell=osash
@@ -127,7 +127,7 @@ brewupdate(){
         echo "remove the following to brew update"
         brew update 2>&1 | tee /dev/stderr | grep '^[[:space:]]*Library/Formula/' |
         while read -r formula; do
-            echo rm -fv "/usr/local/$formula"
+            echo rm -fv -- "/usr/local/$formula"
         done
         return 1
     fi
