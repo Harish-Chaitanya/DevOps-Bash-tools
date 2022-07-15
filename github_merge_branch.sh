@@ -56,8 +56,8 @@ max_args 3 "$@"
 output="$("$srcdir/github_pull_request_create.sh" "$@")"
 
 if [ -n "$output" ]; then
-    pr_url="$(grep '/pull/' <<< "$output" || die "Failed to generate Pull Request or couldn't find pull URL in output")"
-    timestamp "Merging Pull Request $pr_url"
-    gh pr merge --merge "$pr_url"
+    url="$(parse_pull_request_url "$output")"
+    timestamp "Merging Pull Request:  $url"
+    gh pr merge --merge "$url"
     echo >&2
 fi

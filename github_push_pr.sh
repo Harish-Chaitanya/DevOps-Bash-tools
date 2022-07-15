@@ -23,6 +23,8 @@ srcdir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck disable=SC2034,SC2154
 usage_description="
 Pushes the current branch to GitHub origin, sets upstream branch, then raises a Pull Request to the given or default branch
+
+If \$GITHUB_MERGE_PULL_REQUEST=true then will automatically merge the pull request as well
 "
 
 # used by usage() in lib/utils.sh
@@ -32,6 +34,7 @@ usage_args="[<target_base_branch> <title> <description>]"
 help_usage "$@"
 
 #min_args 1 "$@"
+max_args 3 "$@"
 
 check_github_origin
 
@@ -43,17 +46,18 @@ current_branch="$(current_branch)"
 
 git push --set-upstream origin "$(current_branch)"
 
+echo
 output="$("$srcdir/github_pull_request_create.sh" "$current_branch" "$base_branch" 2>&1)"
-
 echo "$output"
+echo
 
-url="$(grep -Eom1 'https://github.com/[[:alnum:]/_-]+/pull/[[:digit:]]+' <<< "$output" || :)"
+url="$(parse_pull_request_url "$output")"
 
-if [ -z "$url" ]; then
-    die "Failed to parse Pull Request URL from output"
+if [ "${GITHUB_MERGE_PULL_REQUEST:-}" = true ]; then
+    timestamp "Merging Pull Request:  $url"
+    gh pr merge --merge "$url"
 fi
 
-echo
 if is_mac; then
     echo "Opening Pull Request"
     open "$url"

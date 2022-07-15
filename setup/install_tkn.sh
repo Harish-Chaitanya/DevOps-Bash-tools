@@ -2,7 +2,7 @@
 #  vim:ts=4:sts=4:sw=4:et
 #
 #  Author: Hari Sekhon
-#  Date: 2022-07-15 11:16:44 +0100 (Fri, 15 Jul 2022)
+#  Date: 2022-07-15 19:34:06 +0100 (Fri, 15 Jul 2022)
 #
 #  https://github.com/HariSekhon/DevOps-Bash-tools
 #
@@ -18,28 +18,37 @@ set -euo pipefail
 srcdir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # shellcheck disable=SC1090
-. "$srcdir/lib/github.sh"
+. "$srcdir/../lib/utils.sh"
 
 # shellcheck disable=SC2034,SC2154
 usage_description="
-Pushes the current branch to GitHub origin, setting upstream branch, then opens a Pull Request preview from this to the given or default branch
-
-Assumes that GitHub is the remote origin, and checks for this for safety
+Installs Tekton CLI
 "
 
 # used by usage() in lib/utils.sh
 # shellcheck disable=SC2034
-usage_args="[<target_base_branch> <head_branch>]"
+usage_args="[<version>]"
+
+export PATH="$PATH:$HOME/bin"
 
 help_usage "$@"
 
-#min_args 1 "$@"
-max_args 2 "$@"
+#version="${1:-2.4.0}"
+version="${1:-latest}"
 
-check_github_origin
+os="$(get_os)"
+if [ "$os" = darwin ]; then
+    os=macOS
+fi
 
-current_branch="$(current_branch)"
+export RUN_VERSION_ARG=1
 
-git push --set-upstream origin "$current_branch"
+os="$(uname -s)"
+arch="$(uname -m)"
+if [ "$os" = Darwin ]; then
+    arch=all
+fi
 
-"$srcdir/github_pull_request_preview.sh" "$@"
+package="tkn_{version}_${os}_${arch}.tar.gz"
+
+"$srcdir/../github_install_binary.sh" tektoncd/cli "$package" "$version" tkn

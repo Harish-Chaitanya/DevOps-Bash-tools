@@ -27,6 +27,9 @@ srcdir_github_lib="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck disable=SC2034
 usage_github_cli_required="Requires GitHub CLI to be installed and configured, as well as jq"
 
+# ERE format regex
+github_pull_request_url_regex='https://github.com/[[:alnum:]/_-]+/pull/[[:digit:]]+'
+
 get_github_repo(){
     git remote -v 2>/dev/null |
     grep github.com |
@@ -138,4 +141,10 @@ get_github_repo_branches(){
         jq -r ".[].name"
         ((page+=1))
     done
+}
+
+parse_pull_request_url(){
+    local text="$1"
+    grep -Eom1 "$github_pull_request_url_regex" <<< "$text" ||
+    die "Failed to parse GitHub pull request URL"
 }
