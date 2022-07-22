@@ -36,11 +36,7 @@ Playlist argument can be a playlist name or a playlist ID (get this from spotify
 
 Output format:
 
-Artist - Track
-
-or if \$SPOTIFY_CSV environment variable is set then:
-
-\"Artist\",\"Track\"
+URI \\t Artist - Track
 
 
 $usage_playlist_help
@@ -71,19 +67,10 @@ playlist_id="$("$srcdir/spotify_playlist_name_to_id.sh" "$playlist_id" "$@")"
 url_path="/v1/playlists/$playlist_id/tracks?limit=100&offset=$offset"
 
 output(){
-    # If you set \$SPOTIFY_PLAYLIST_TRACKS_UNAVAILABLE=1 then will only output tracks that are unavailable (greyed out on Spotify)
-    # Can feed this in to spotify_delete_from_playlist.sh to crop them from TODO / Discover Backlog type playlists
-    #if [ -n "${SPOTIFY_PLAYLIST_TRACKS_UNAVAILABLE:-}" ]; then
-        # XXX: this isn't reliable, some tracks are still available when these fields are both empty :-/
-        # and debug dumps comparing tracks shows there are no other fields to differentiate whether a track is available or not
-    #    jq -r '.items[] | select(.track.uri) | select((.track.available_markets | length) == 0) | select((.track.album.available_markets | length) == 0)' <<< "$output"
-    #else
-    if not_blank "${SPOTIFY_CSV:-}"; then
-        jq -r '.items[].track | [([.artists[]?.name] | join(", ")), .name] | @csv'
-    else
-        jq -r '.items[].track | [([.artists[]?.name] | join(", ")), "-", .name] | @tsv'
-    fi <<< "$output" |
+    jq -r '.items[].track | [.uri, ([.artists[]?.name] | join(", ")), "-", .name] | @tsv' <<< "$output" |
+    sed $'s/\t/|/' |
     tr '\t' ' ' |
+    tr '|' '\t' |
     sed '
         s/^[[:space:]]*-//;
         s/^[[:space:]]*//;

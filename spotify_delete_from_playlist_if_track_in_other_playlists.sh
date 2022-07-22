@@ -2,7 +2,7 @@
 #  vim:ts=4:sts=4:sw=4:et
 #
 #  Author: Hari Sekhon
-#  Date: 2020-11-30 17:29:53 +0000 (Mon, 30 Nov 2020)
+#  Date: 2022-07-22 17:00:36 +0100 (Fri, 22 Jul 2022)
 #
 #  https://github.com/HariSekhon/DevOps-Bash-tools
 #
@@ -22,13 +22,16 @@ srcdir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # shellcheck disable=SC2034,SC2154
 usage_description="
-Deletes tracks from the given playlist if their URIs are found in the subsequently given playlists
+Deletes tracks from the given playlist if their 'Artist - Track' name matches exactly tracks found in the subsequently given playlists
 
 This is useful to delete things from TODO playlists that are already in a bunch of other playlists
 
 The first playlist is the one to delete the tracks in, this will be your TODO playlist
 
 Subsequent playlist args are the source playlists to check for already existing tracks
+
+Caveat: this is not as accurate as the default adjacent script spotify_delete_from_playlist_if_in_other_playlists.sh which only deletes on exact URI matches
+        because you can have different versions of the same song with same 'Artist - Track' name
 "
 
 # used by usage() in lib/utils.sh
@@ -53,8 +56,15 @@ if is_mac; then
     }
 fi
 
+# URI \t Artist - Track format
+timestamp "Getting list of URI + Artist - Track names from target playlist '$playlist_to_delete_from'"
+playlist_uri_artist_tracks="$("$srcdir/spotify_playlist_tracks_uri_artist_track.sh" "$playlist_to_delete_from")"
+
 for playlist in "$@"; do
-    "$srcdir/spotify_playlist_tracks_uri.sh" "$playlist"
+    timestamp "Getting list of tracks from source playlist '$playlist'"
+    "$srcdir/spotify_playlist_tracks.sh" "$playlist"
 done |
-grep -Fxf <("$srcdir/spotify_playlist_tracks_uri.sh" "$playlist_to_delete_from") |
+grep -f <(sed $'s/^/spotify:track:[[:alnum:]]\+\t/' <<< "$playlist_uri_artist_tracks") |
+# get just the URIs of matching tracks
+sed $'s/\t.*$//' |
 "$srcdir/spotify_delete_from_playlist.sh" "$playlist_to_delete_from"
