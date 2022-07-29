@@ -451,7 +451,8 @@ etc.
   - `gke_*.sh` - [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine) scripts
     - `gke_kube_creds.sh` - auto-loads all GKE clusters credentials in the current / given / all projects so your kubectl is ready to rock on GCP
     - `gke_kubectl.sh` - runs kubectl commands safely fixed to a given GKE cluster using config isolation to avoid concurrency race conditions
-    - `gke_cert_manager_firewall_rule.sh` - creates a GCP firewall rule for a given GKE cluster's masters to access [Cert Manager](https://cert-manager.io/) admission webhook (auto-determines the master cidr and network)
+    - `gke_firewall_rule_cert_manager.sh` - creates a GCP firewall rule for a given GKE cluster's masters to access [Cert Manager](https://cert-manager.io/) admission webhook (auto-determines the master cidr, network and target tags)
+    - `gke_firewall_rule_kubeseal.sh` - creates a GCP firewall rule for a given GKE cluster's masters to access [Sealed Secrets](https://github.com/bitnami-labs/sealed-secrets) controller for `kubeseal` to work (auto-determines the master cidr, network and target tags)
     - `gke_nodepool_nodes.sh` - lists all nodes in a given nodepool on the current GKE cluster via kubectl labels (fast)
     - `gke_nodepool_nodes2.sh` - same as above via GCloud SDK (slow, iterates instance groups)
     - `gke_nodepool_taint.sh` - taints/untaints all nodes in a given GKE nodepool on the current cluster (see `kubectl_node_taints.sh` for a quick way to see taints)
@@ -545,6 +546,7 @@ etc.
 - `kubectl_get_all.sh` - finds all namespaced Kubernetes objects and requests them for the current or given namespace. Useful because `kubectl get all` misses a lof of object types
 - `kubectl_kv_to_secret.sh` - creates a Kuberbetes secret from `key=value` or shell export format, as args or via stdin (eg. piped from `aws_csv_creds.sh`)
 - `kubectl_secret_values.sh` - prints the keys and base64 decoded values within a given Kubernetes secret for quick debugging of Kubernetes secrets. See also: `gcp_secrets_to_kubernetes.sh`
+- `kubernetes_secrets_to_sealed_secrets.sh` - generates [Bitnami Sealed Secrets](https://github.com/bitnami-labs/sealed-secrets) for any existing secrets found in the current or given namespace
 - `kubernetes_foreach_context.sh` - executes a command across all kubectl contexts, replacing `{context}` in each iteration (skips lab contexts `docker` / `minikube` / `minishift` to avoid hangs since they're often offline)
 - `kubernetes_foreach_namespace.sh` - executes a command across all kubernetes namespaces in the current cluster context, replacing `{namespace}` in each iteration
   - Can be chained with `kubernetes_foreach_context.sh` and useful when combined with `gcp_secrets_to_kubernetes.sh` to load all secrets from GCP to Kubernetes for the current cluster, or combined with `gke_kube_creds.sh` and `kubernetes_foreach_context.sh` for all clusters!
