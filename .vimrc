@@ -352,6 +352,7 @@ nmap          ;t :set list!<CR>
 nmap          ;q :q<CR>
 nmap          ;r :call WriteRun()<CR>
 nmap          ;R :call WriteRunDebug()<CR>
+"nmap          ;R :!run.sh %:p<CR>
 "nmap <silent> ;s :call ToggleSyntax()<CR>
 nmap <silent> ;s :,!sqlcase.pl<CR>
 "nmap          ;u :call HgGitU()<CR>
@@ -380,6 +381,7 @@ nmap          ;v :source ~/.vimrc<CR>
 nmap          ;V :call WriteRunVerbose()<CR>
 nmap          ;w :w<CR>
 "nmap          ;x :x<CR>
+nmap          ;z :call ToggleDebug()<CR>
 nmap          ;§ :call ToggleScrollLock()<CR>
 
 "noremap <silent> ,cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:comment_char,'\/')<CR>/<CR>:nohlsearch<CR>
@@ -456,6 +458,16 @@ function! ToggleGutter()
     "endif
 endfunction
 
+function! ToggleDebug()
+    if $DEBUG
+        echo "DEBUG disabled"
+        let $DEBUG=""
+    else
+        echo "DEBUG enabled"
+        let $DEBUG=1
+    endif
+endfunction
+
 :command! Hr  :normal a# <ESC>76a=<ESC>a #<ESC>
 ":function Hr()
     ":s/^/# ============================================================================ #/
@@ -524,7 +536,13 @@ endfunction
 
 function! WriteRun()
     :w
-    if &filetype == 'go'
+    if executable('run.sh')
+        " this only works for scripts
+        ":! eval "%:p" `$bash_tools/lib/args_extract.sh "%:p"`  2>&1 | less
+        " but this now works for config files too which can have run headers
+        " instead of args headers
+        :! "$bash_tools/run.sh" "%:p" 2>&1 | less
+    elseif &filetype == 'go'
         " TODO: consider switching this to go build and then run the binary as
         " this gets stdout only at the end so things like welcome.go don't get
         " the transition effects when run like this
@@ -554,11 +572,7 @@ function! WriteRun()
     elseif expand('%:t') == '.envrc'
         :! bash -c 'cd "%:p:h" && direnv allow .' 2>&1 | less
     else
-        " this only works for scripts
-        ":! eval "%:p" `$bash_tools/lib/args_extract.sh "%:p"`  2>&1 | less
-        " but this now works for config files too which can have run headers
-        " instead of args headers
-        :! "$bash_tools/run.sh" "%:p" 2>&1 | less
+        echo "unsupported file type and run.sh not found in PATH"
     endif
 endfunction
 

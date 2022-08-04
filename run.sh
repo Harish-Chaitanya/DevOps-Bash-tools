@@ -64,7 +64,12 @@ basename="${filename##*/}"
 cd "$dirname"
 
 docker_compose_up(){
-    docker-compose -f "$filename" up
+    local dc_args=()
+    local env_file="${filename%.*}.env"
+    if [ -f "$env_file" ]; then
+        dc_args+=(--env-file "$env_file")
+    fi
+    docker-compose -f "$filename" ${dc_args:+"${dc_args[@]}"} up
 }
 
 if [ -n "$run_cmd" ]; then
@@ -87,7 +92,7 @@ else
                         ;;
    kustomization.yaml)  kustomize build --enable-helm
                         ;;
-               .envrc)  cd "$dirname" && direnv allow .
+               .envrc)  direnv allow .
                         ;;
                  *.go)  eval go run "'$filename'" "$("$srcdir/lib/args_extract.sh" "$filename")"
                         ;;
