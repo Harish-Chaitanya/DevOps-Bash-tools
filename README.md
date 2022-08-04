@@ -223,7 +223,7 @@ make
 - [CI/CD - Continuous Integration / Continuous Delivery](https://github.com/HariSekhon/DevOps-Bash-tools#cicd---continuous-integration--continuous-deployment) - API scripts & build pipeline configs for most major CI systems:
   - Jenkins, Concourse, GoCD, TeamCity - one-touch boot & build
   - Azure DevOps Pipelines, GitHub Actions Workflows, GitLab CI, BitBucket Pipelines, AppVeyor, BuildKite, Travis CI, Circle CI, Codefresh, CodeShip, Drone.io, Semaphore CI, Shippable, Wercker ...
-  - Terraform Cloud
+  - Terraform Cloud, Octopus Deploy
   - Checkov / Bridgecrew Cloud
 - [Internet Services](https://github.com/HariSekhon/DevOps-Bash-tools#internet-services) - Digital Ocean, Cloudflare, Pingdom, NGrok, DataDog
 - [Perl](https://github.com/HariSekhon/DevOps-Bash-tools#perl) - Perl utilities & library management
@@ -943,6 +943,7 @@ etc.
 - `checkov_resource_*.sh` - [Checkov](https://www.checkov.io/) resource counts - useful to estimate [Bridgecrew Cloud](https://www.bridgecrew.cloud/) costs which are charged per resource:
   - `checkov_resource_count.sh` - counts the number of resources Checkov is scanning in the current or given directory
   - `checkov_resource_count_all.sh` - counts the total number of resources Checkov is scanning across all given repo checkouts
+- `octopus_api.sh` - queries the [Octopus Deploy](https://octopus.com/) API
 
 #### Internet Services
 

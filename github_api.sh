@@ -100,7 +100,14 @@ min_args 1 "$@"
 
 curl_api_opts "$@"
 
+url_path="$1"
+shift || :
+
+url_path="${url_path//https:\/\/api.github.com}"
+url_path="${url_path##/}"
+
 user="${GITHUB_USERNAME:-${GITHUB_USER:-}}"
+
 if [ -z "$user" ]; then
     user="$(git remote -v 2>/dev/null | awk '/https:\/\/.+@github\.com/{print $2; exit}' | sed 's|https://||;s/@.*//;s/:.*//' || :)"
     # curl_auth.sh does this automatically
@@ -124,12 +131,6 @@ export PASSWORD
 #    echo "using authenticated access" >&2
 #fi
 
-url_path="${1:-}"
-shift || :
-
-url_path="${url_path//https:\/\/api.github.com}"
-url_path="${url_path##/}"
-
 # for convenience of straight copying and pasting out of documentation pages
 
 repo=$(git_repo | sed 's/.*\///' || :)
@@ -149,5 +150,5 @@ url_path="${url_path/:repo/$repo}"
 url_path="${url_path/<repo>/$repo}"
 #url_path="${url_path/\{repo\}/$repo}"
 
-"$srcdir/curl_auth.sh" "$url_base/$url_path" "${CURL_OPTS[@]}" "$@" |
+"$srcdir/curl_auth.sh" "$url_base/$url_path" ${CURL_OPTS:+"${CURL_OPTS[@]}"} "$@" |
 jq_debug_pipe_dump
