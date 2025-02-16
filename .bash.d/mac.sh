@@ -27,8 +27,17 @@ bash_tools="${bash_tools:-$(dirname "${BASH_SOURCE[0]}")/..}"
 
 is_mac || return
 
+export HOMEBREW_DISPLAY_INSTALL_TIMES=1
+#export HOMEBREW_DEBUG=1
+#export HOMEBREW_CLEANUP_MAX_AGE_DAYS=30  # default: 120
+
 alias osash="osascript -i"
 alias osashell=osash
+
+if [ -x /opt/homebrew/bin/brew ]; then
+    # shellcheck disable=SC2046
+    eval $(/opt/homebrew/bin/brew shellenv)
+fi
 
 date(){
     gdate "$@"
@@ -53,6 +62,21 @@ fi
 # not sure why I set it to linux
 #export TERM=linux
 #ulimit -u 512
+
+dhcprenew(){
+    local interface="${1:-en0}"
+    watch -q 1 ifconfig "$interface"
+    sudo scutil <<< "add State:/Network/Interface/$interface/RefreshConfiguration temporary"
+    watch ifconfig "$interface"
+}
+
+dhcpdiscover(){
+    local interface="${1:-en0}"
+    watch -q 1 ifconfig "$interface"
+    sudo ipconfig set "$interface" BOOTP
+    sudo ipconfig set "$interface" DHCP
+    watch ifconfig "$interface"
+}
 
 macsleep(){
     sudo pmset sleepnow
