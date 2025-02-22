@@ -47,9 +47,14 @@ min_args 1 "$@"
 
 # defer expansion
 # shellcheck disable=SC2016
-trap_cmd 'exitcode=$?; echo; echo "Exit Code: $exitcode"'
+trap_cmd 'exitcode=$?; echo; echo "Error - Exit Code: $exitcode"'
 
 filename="$1"
+
+if ! [ -f "$filename" ]; then
+    echo "File not found: $filename"
+    exit 1
+fi
 
 # examples:
 #
@@ -68,10 +73,12 @@ if [ -n "$lint_hint" ]; then
         check_kubernetes_yaml.sh "$basename"
     else
         # assume it's a commmand
-        eval "$lint_hint" "$filename"
+        eval "$lint_hint" "$basename"
     fi
 else
     case "$basename" in
+                 *.sh)   shellcheck "$basename"
+                        ;;
              Makefile)  check_makefiles.sh "$basename"
                         ;;
            Dockerfile)  #hadolint "$basename"
@@ -89,7 +96,7 @@ else
   #kustomization.yaml)  yamllint "$basename"
   #                     ;;
 *.y*ml|autoinstall-user-data)
-                        #yamllint "$filename"
+                        #yamllint "$basename"
                         check_yaml.sh "$basename"
                         ;;
               #.envrc)  cd "$dirname" && direnv allow .
@@ -101,13 +108,44 @@ else
                  *.tf)  terraform fmt -diff
                         terraform validate
                         ;;
- *.pkr.hcl|*.pkr.json)  packer init "$filename" &&
-                        packer validate "$filename" &&
-                        packer fmt -diff "$filename"
+       terragrunt.hcl)  terragrunt fmt -diff
+                        terragrunt validate
+                        ;;
+ *.pkr.hcl|*.pkr.json)  packer init "$basename" &&
+                        packer validate "$basename" &&
+                        packer fmt -diff "$basename"
                         ;;
                  *.md)  mdl "$basename"
+                        ;;
+             Fastfile) if [[ "$(readlink -f "$basename")" =~ /fastlane/Fastfile ]]; then
+                            ruby -c "$basename"
+                        fi
+                        ;;
+               # this command doesn't exit 1 if the file isn't found
+               #.vimrc)  if ! vim -c "source $basename" -c "q"; then
+               .vimrc)  if vim -c "
+                            if !filereadable('$basename') |
+                                echoerr 'Error: File not found'
+                                cquit 1
+                            else
+                                source $basename
+                            endif
+                            " -c "q"; then
+                            echo "ViM basic lint validation passed"
+                        else
+                            die "ViM basic lint validation failed"
+                        fi
+                        if type -P vint &>/dev/null; then
+                            if vint "$basename"; then
+                                echo "Vint vim script linting passed"
+                            else
+                                die "Vint vim script linting failed"
+                            fi
+                        fi
                         ;;
                     *)  die "Cannot lint unrecognized file type for file: $filename"
                         ;;
     esac
 fi
+
+untrap
